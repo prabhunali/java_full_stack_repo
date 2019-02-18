@@ -1,0 +1,48 @@
+<div class="container">
+  <div *ngFor="let mentorSearchResult of mentorSearchResults; let i = index;" class="card w-100 add-margin-top">
+    <div class="card-body">
+      <h5 class="card-title">{{ mentorSearchResult.mentorFirstName + " " + mentorSearchResult.mentorLastName }}</h5>
+      <div class="form-group row">
+        <div class="col-sm-9">
+          <p class="card-text">{{ mentorSearchResult.mentor.introduction }}</p>
+          <p class="card-text"><b>Skill Name: </b> {{mentorSearchResult.skill.name}}</p>
+          <p class="card-text"><b>Total Years of Experience: </b> {{mentorSearchResult.mentorSkill.yearOfExperience}}</p>
+          <p class="card-text"><b>Overall Rating: </b></p>
+        </div>
+        <div class="col-sm-3">
+            <img src="assets/images/mentor_img.png" class="card-img-top" alt="image" height="150" width="40">
+            <button type="button" class="btn btn-primary btn-block" id="{{ 'btn-viewMentor-' +  mentorSearchResult.mentorSkill.id}}" (click)="viewMentor(mentorSearchResult)">View Mentor</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Mentor's Profile</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Recipient:</label>
+                <input type="text" class="form-control" id="recipient-name">
+              </div>
+              <div class="form-group">
+                <label for="message-text" class="col-form-label">Message:</label>
+                <textarea class="form-control" id="message-text"></textarea>
+              </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Send message</button>
+          </div>
+    </div>
+  </div>
+</div>

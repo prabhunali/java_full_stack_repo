@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">Col 1</div>
+    <div class="col-md-6">Col 2</div>
+
+
+    <div class="col-md-3">
+        <form>
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label" for="proposeSkillName">Skill</label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" id="proposeSkillName" readonly>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label" for="proposeDateFromTo">Date Range</label>
+            <div class="col-sm-7">
+              <input type="text" class="form-control" id="proposeDateFromTo" readonly>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label" for="proposeTimeFrom">Start Time</label>
+            <div class="col-sm-7">
+              <input type="text" class="form-control" id="proposeTimeFrom" readonly>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-5 col-form-label" for="proposeTimeTo">End Time</label>
+            <div class="col-sm-7">
+              <input type="text" class="form-control" id="proposeTimeTo" readonly>
+            </div>
+          </div>
+          <div class="form-group row">
+              <label class="col-sm-5 col-form-label" for="proposeMessage">Message</label>
+              <div class="col-sm-7">
+                  <textarea class="form-control" [(ngModel)] = "basicInfo.introduction" name="introduction"></textarea>
+              </div>
+            </div>
+          <button type="submit" class="btn btn-primary btn-block">Propose Training</button>
+        </form>
+    </div>
+  </div>
+</div>

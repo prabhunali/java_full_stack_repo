@@ -1,0 +1,372 @@
+
+<div class="alert alert-warning text-center" role="alert" *ngIf="!isBasicInfoCompleted">
+    <strong>Account setup is incomplete.</strong> Please fill out all the required fields.
+</div>
+
+<div class="accordion" id="accordionMentorProfile">
+  <div class="card">
+    <div class="card-header" id="headingBasicInfo">
+      <h5 class="mb-0">
+        <button class="btn fa" [ngClass]="isBasicInfoCompleted ? 'btn-link fa-check-circle' : 'btn-link fa-times-circle'" type="button" data-toggle="collapse" data-target="#collapseBasicInfo" aria-expanded="true" aria-controls="collapseBasicInfo">
+          Basic Info
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseBasicInfo" class="collapse show" aria-labelledby="headingBasicInfo" data-parent="#accordionMentorProfile">
+      <div class="card-body">
+        <form name="basicInfoForm" (ngSubmit)="updateUserProfile()" #basicInfoForm="ngForm" novalidate>
+          <div class="form-group row">
+            <div class="col-md-8">
+              <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="">First and Last Name:</span>
+                </div>
+                <input type="text" class="form-control" id="mentorFirstName" [(ngModel)] = "basicInfo.firstName" name="mentorFirstName">
+                <input type="text" class="form-control" id="mentorLastName" [(ngModel)] = "basicInfo.lastName" name="mentorLastName">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group input-group-sm">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="">Total Years Experience</span>
+                  </div>
+                  <input type="number" class="form-control" id="totalYearsExperience" [(ngModel)] = "basicInfo.totalYearsExperience" name="totalYearsExperience">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-8">
+                <div class="input-group input-group-sm">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="">LinkedIn URL: </span>
+                  </div>
+                  <input type="text" class="form-control" [(ngModel)] = "basicInfo.linkedInUrl" name="linkedInUrl">
+                </div>     
+            </div>
+            <div class="col-md-4">
+              <div class="input-group input-group-sm">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="">Contact Number: </span>
+                  </div>
+                  <input type="text" class="form-control" [(ngModel)] = "basicInfo.contactNumber" name="contactNumber">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-md-8">
+              <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="">Introduction: </span>
+                </div>
+                <textarea class="form-control" [(ngModel)] = "basicInfo.introduction" name="introduction"></textarea>
+              </div>     
+            </div>
+            <div class="col-md-4">
+              <button type="submit" class="btn btn-primary" id="btnSaveMentorBasicInfo">Save</button>                
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="headingSkills">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseSkills" aria-expanded="true" aria-controls="collapseSkills">
+          Skills
+        </button>
+      </h5>
+    </div>
+    <div id="collapseSkills" class="collapse" aria-labelledby="headingSkills" data-parent="#accordionMentorProfile">
+      <div class="card-body">
+        <div class="row">
+          <button type="button" class="btn btn-success btn-sm fa fa-plus" (click)="changeCrudMode('Add')" data-toggle="modal" data-target=".skillsModal">Add Skill</button>
+        </div>
+        <div class="row">
+          <table class="table table-striped" id="tableMentorSkills">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Skill</th>
+                  <th scope="col">Self-Rating</th>
+                  <th scope="col">Years of Exp</th>
+                  <th scope="col">Facilities Offered</th>
+                </tr>
+              </thead>
+              
+              <tbody>
+                <tr *ngFor="let ms of mentorSkills; index as i">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>{{ getSkill(ms.skillId).name }}</td>
+                    <td>{{ ms.selfRating }}</td>
+                    <td>{{ ms.yearOfExperience }}</td>
+                    <td>{{ ms.facilitiesOffered }}</td>
+                    <td>
+                      <button (click)="loadMentorSkillToEdit(ms)" type="button" class="btn btn-primary btn-sm fa fa-edit" aria-hidden="true" data-toggle="modal" data-target=".skillsModal"></button>
+                      <button (click)="deleteMentorSkill(ms)" type="button" class="btn btn-primary btn-sm fa fa-trash icon-margin-left" aria-hidden="true"></button>
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="headingMentorCalendar">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseMentorCalendar" aria-expanded="true" aria-controls="collapseMentorCalendar">
+          Mentor Calendar
+        </button>
+      </h5>
+    </div>
+    <div id="collapseMentorCalendar" class="collapse" aria-labelledby="headingMentorCalendar" data-parent="#accordionMentorProfile">
+      <div class="card-body">
+        <div class="row">
+          <button type="button" class="btn btn-success btn-sm fa fa-plus" (click)="changeCrudMode('Add')" data-toggle="modal" data-target=".calendarModal">Add Schedule</button>
+        </div>
+        <div class="row">
+          <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Skill</th>
+                  <th scope="col">Start Time</th>
+                  <th scope="col">End Time</th>
+                  <th scope="col">Days Available</th>
+                </tr>
+              </thead>
+              
+              <tbody>
+                <tr *ngFor="let cal of mentorCals; index as i">
+                    <th scope="row" id="">{{ i + 1 }}</th>
+                    <td>{{ getSkill(cal.skillId).name}}</td>
+                    <td>{{ cal.startTime }}</td>
+                    <td>{{ cal.endTime }}</td>
+                    <td>{{cal.daysAvailable}}</td>
+                    <td>
+                        <button (click)="loadMentorCalendarToEdit(cal)" type="button" class="btn btn-primary btn-sm fa fa-edit" aria-hidden="true" data-toggle="modal" data-target=".calendarModal"></button>
+                        <button (click)="deleteMentorCalendar(cal)" type="button" class="btn btn-primary btn-sm fa fa-trash icon-margin-left" aria-hidden="true"></button>
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="headingAccountInfo">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapsAccountInfo" aria-expanded="true" aria-controls="collapsAccountInfo">
+          Account Info
+        </button>
+      </h5>
+    </div>
+    <div id="collapsAccountInfo" class="collapse" aria-labelledby="headingAccountInfo" data-parent="#accordionMentorProfile">
+      <div class="card-body">
+        <button id="btnAddd">New</button>
+        <table id="tblData" class="table table-striped">          
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal For Adding Mentor Skills-->
+<div class="modal fade skillsModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Skill</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form name="formAddSkills" (ngSubmit)="skillForm.form.valid && saveMentorSkill()" #skillForm="ngForm" novalidate>
+              <div class="form-group">
+                <label for="typehead-focus">Search Skill</label>
+                <input
+                  id="typeahead-focus"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="model.skillName"
+                  [ngbTypeahead]="search"
+                  (focus)="focus$.next($event.target.value)"
+                  (click)="click$.next($event.target.value)"
+                  #instance="ngbTypeahead"
+                  name="skillName"
+                  #skillName="ngModel"
+                  required
+                />
+                  <div *ngIf="skillForm.submitted && skillName.invalid">
+                    <div *ngIf="skillName.errors.required" class="alert alert-danger">Please choose a skill</div>
+                  </div>
+              </div>
+              <div class="form-group row">
+                <div class="col">
+                  <label for="sel1" class="col-sm-12">Rate Yourself</label>
+                  <select class="form-control form-control-sm" id="sel1" [(ngModel)]="model.skillSelfRating" name="skillSelfRating" #skillSelfRating="ngModel" required>
+                    <option>0</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                  </select>
+                  <div *ngIf="skillForm.submitted && skillSelfRating.invalid">
+                      <div *ngIf="skillSelfRating.errors.required" class="alert alert-danger">Please rate yourself</div>
+                    </div>
+                </div>
+  
+                <div class="col">
+                    <label for="yearOfExp" class="col-sm-12">Years of Experience</label>
+                    <input type="number" class="form-control form-control-sm" id="yearOfExp" [(ngModel)]="model.skillYearsOfExp" name="skillYearsOfExp" #skillYearsOfExp="ngModel" min=0 oninput="validity.valid||(value='');" required>
+                    <div *ngIf="skillForm.submitted && skillYearsOfExp.invalid">
+                        <div *ngIf="skillYearsOfExp.errors.required" class="alert alert-danger">Please enter years of experience</div>
+                      </div>
+                  </div>
+              </div>
+  
+              <div class="form-group">
+                <label for="facilities-offered" class="col-form-label">Facilities Offered:</label>
+                <textarea class="form-control" id="facilities-offered" [(ngModel)]="model.skillFacilities" name="skillFacilities" #skillFacilities="ngModel" required></textarea>
+                <div *ngIf="skillForm.submitted && skillFacilities.invalid">
+                    <div *ngIf="skillFacilities.errors.required" class="alert alert-danger">Please specify the facilities offered for this training</div>
+                  </div>
+              </div>
+              <div class="form-group text-right">
+                <hr>
+                <button class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button *ngIf="crudMode ==='Edit'" (click)="editMentorSkill()" class="btn btn-primary btn-sm">Edit</button>
+                <button *ngIf="crudMode ==='Add'" type="submit" class="btn btn-primary btn-sm">Save</button>
+              </div>
+            </form>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal for adding Mentor Calendar-->
+<div class="modal fade calendarModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Schedule</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-9">  
+              <div class="form-group">
+                <label for="typehead-focus"><b>Select Skill</b></label>
+                <select class="form-control form-control-sm" id="calendarSkill" [(ngModel)]="model.calendarSkill" name="calendarSkill" (ngModelChange)="checkDaysAvailable();" #calendarSkill="ngModel" required>
+                  <option *ngFor="let ms of mentorSkills; index as i">{{ getSkill(ms.skillId).name }}</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <div class="input-group rm-bg">
+                  <div class="input-group-prepend">
+                  <span class="input-group-text rm-bg" id=""><b>Time Slot: </b></span>
+                  </div>
+                  
+                  <div class="input-group-prepend">
+                    <timepicker [(ngModel)]="timeFrom" [showMeridian]="ismeridian" (isValid)="isValid($event)"></timepicker>
+                    <input type="hidden" id="calTimeFromHidden" value="{{ timeFrom | date: 'HH:mm' }}" />
+                    <div *ngIf="!valid" class="alert alert-danger">Invalid time</div>
+                  </div>
+  
+                  <div class="input-group-prepend">
+                    <span class="input-group-text rm-bg"><b> - </b></span>
+                  </div>
+  
+                  <div class="input-group-prepend">
+                    <timepicker [(ngModel)]="timeTo" [showMeridian]="ismeridian" (isValid)="isValid($event)"></timepicker>
+                    <input type="hidden" id="calTimeToHidden" value="{{ timeTo | date: 'HH:mm' }}" />
+                    <div *ngIf="!valid" class="alert alert-danger">Invalid time</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group row">
+                  <label for="typehead-focus"><b>Days Available</b></label>
+              </div>
+              <div class="form-group row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="day-chk-1" value="Mon">
+                  <label class="form-check-label" for="inlineCheckbox1">Mon</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="day-chk-2" value="Tue">
+                  <label class="form-check-label" for="inlineCheckbox2">Tue</label>
+                </div>
+              </div>
+              
+              <div class="form-group row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="day-chk-3" value="Wed">
+                  <label class="form-check-label" for="inlineCheckbox1">Wed</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="day-chk-4" value="Thu">
+                  <label class="form-check-label" for="inlineCheckbox2">Thu</label>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="day-chk-5" value="Fri">
+                  <label class="form-check-label" for="inlineCheckbox1">Fri</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="day-chk-6" value="Sat">
+                  <label class="form-check-label" for="inlineCheckbox2">Sat</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="day-chk-7" value="Sun">
+                  <label class="form-check-label" for="inlineCheckbox2">Sun</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group text-center">
+            <hr>
+            <button class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+            <button *ngIf="crudMode ==='Edit'" (click)="editMentorCalendar()" class="btn btn-primary btn-sm">Edit</button>
+            <button *ngIf="crudMode ==='Add'" (click)="saveMentorCalendar()" class="btn btn-primary btn-sm">Save</button>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
