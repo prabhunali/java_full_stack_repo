@@ -1,0 +1,66 @@
+####################################################################################
+LOGIN - MENTOR
+####################################################################################
+URL:	http://localhost:8083/users/generate-token
+REQUEST:
+{
+	"username": "jekjektorres_agustin@yahoo.com",
+	"password": "jekjek"
+}
+####################################################################################
+LOGIN - USER
+{
+	"username": "jake.agustin03@gmail.com",
+	"password": "jake123"
+}
+####################################################################################
+USER - PROPOSED TRAINING
+REQUEST
+{
+	"userId" : 13,
+	"mentorId" : 12,
+	"skillId" : 4,
+	"status" : "Proposed",
+	"progress" : 0,
+	"rating" : 0,
+	"startDate" : "2019-02-04",
+	"endDate" : "2019-02-05",
+	"startTime" : "09:00",
+	"endTime" : "17:00"
+}
+
+RESPONSE
+{
+    "timestamp": "2019-01-31T15:39:38.263+0000",
+    "status": 404,
+    "error": "Not Found",
+    "message": "No message available",
+    "path": "/training/propose"
+}
+####################################################################################
+USER - FINALIZED/CANCELLED TRAINING
+URL:	http://localhost:8083/training/finalize/3/true
+		http://localhost:8083/training/finalize/3/false
+REQUEST:	{}
+RESPONSE:
+{
+    "timestamp": "2019-01-31T18:17:32.866+0000",
+    "status": 404,
+    "error": "Not Found",
+    "message": "No message available",
+    "path": "/training/finalize/3/false"
+}
+####################################################################################
+MENTOR CONFIRMED/REJECTED TRAINING
+URL:	http://localhost:8083/training/confirm/3/true
+		http://localhost:8083/training/confirm/3/false
+REQUEST {}
+RESPONSE
+{
+    "timestamp": "2019-01-31T17:50:54.165+0000",
+    "status": 404,
+    "error": "Not Found",
+    "message": "No message available",
+    "path": "/training/confirm/3/true"
+}
+####################################################################################

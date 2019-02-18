@@ -1,0 +1,28 @@
+##########################################################################
+SEARCH MENTOR
+##########################################################################
+URL: http://localhost:8083/home/searchmentor?skillName=Java&dateFromTo=02/04/2019 - 02/06/2019&startTime=08:00&endTime=17:00
+RESPONSE:
+[
+    {
+        "mentorId": 8,
+        "mentorFirstName": "Jake",
+        "mentorLastName": "Agustin",
+        "linkedInUrl": "na",
+        "yearsOfExperience": 4,
+        "mentorSkills": [
+            {
+                "id": 3,
+                "mentorId": 8,
+                "skillId": 4,
+                "selfRating": 8,
+                "yearOfExperience": 5,
+                "facilitiesOffered": "Related training materials"
+            }
+        ]
+    }
+]
+
+##########################################################################
+
+##########################################################################

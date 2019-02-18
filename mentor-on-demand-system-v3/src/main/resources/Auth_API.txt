@@ -1,0 +1,96 @@
+Desctription:	API to create new user
+URL:			http://localhost:8083/signup
+Method:			POST
+Header:			Content-Type: application/json
+Payload/Body: 
+{
+    "username": "jta123",
+    "password":"jta123",
+    "firstName": "Jake",
+    "lastName": "Agustin",
+    "contactNumber": "09181273849",
+    "registrationCode": "1292334",
+    "active": true,
+    "roleName": "ADMIN"
+}
+
+RESPONSE ----->
+{
+    "id": 8,
+    "username": "jta123",
+    "firstName": "Jake",
+    "lastName": "Agustin",
+    "contactNumber": "09181273849",
+    "registrationDateTime": "2019-01-11T14:55:43.866+0000",
+    "registrationCode": "1292334",
+    "active": true,
+    "roles": [
+        {
+            "id": 3,
+            "name": "ADMIN",
+            "description": "Admin Role"
+        }
+    ]
+}
+####################################################################################
+Desctription:	API to generate token
+URL: 			http://localhost:8083/users/generate-token
+Method: 		POST
+Payload/Body:
+{ "username": "jta123", "password": "jta123" }
+
+RESPONSE ----->
+{
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdGExMjMiLCJzY29wZXMiOiJST0xFX0FETUlOIiwiaWF0IjoxNTQ3MjE4NjQzLCJleHAiOjE1NDcyMzY2NDN9.dVn9uDUtsPtpA_HXtr3Dxsl6cFeYvezWOupVoweM1Ko",
+    "type": "Bearer",
+    "username": "jta123",
+    "authorities": [
+        {
+            "authority": "ROLE_ADMIN"
+        }
+    ]
+}
+####################################################################################
+LOGIN - MENTOR
+####################################################################################
+URL:	http://localhost:8083/users/generate-token
+REQUEST:
+{
+	"username": "jekjektorres_agustin@yahoo.com",
+	"password": "jekjek"
+}
+
+RESPONSE:
+{
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqZWtqZWt0b3JyZXNfYWd1c3RpbkB5YWhvby5jb20iLCJzY29wZXMiOiJST0xFX01FTlRPUiIsImlhdCI6MTU0ODg3NzE4NywiZXhwIjoxNTQ4ODk1MTg3fQ.4WP0CwgcQCHBPtXM-KsFeIG2GJ5a-NAdg5zTuCKC5J4",
+    "type": "Bearer",
+    "username": "jekjektorres_agustin@yahoo.com",
+    "authorities": [
+        {
+            "authority": "ROLE_MENTOR"
+        }
+    ],
+    "active": false,
+    "verified": false
+}
+####################################################################################
+LOGIN - USER
+{
+	"username": "jake.agustin03@gmail.com",
+	"password": "jake123"
+}
+####################################################################################
+USER - PROPOSE TRAINING
+{
+	"userId" : 13,
+	"mentorId" : 12,
+	"skillId" : 4,
+	"status" : "Proposed",
+	"progress" : 0,
+	"rating" : 0,
+	"startDate" : "2019-02-04",
+	"endDate" : "2019-02-05",
+	"startTime" : "09:00",
+	"endTime" : "17:00"
+}
+####################################################################################
