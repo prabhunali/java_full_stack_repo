@@ -1,0 +1,11 @@
+# Default: 8761; you may also try 1111 or your choice
+server:
+  port: 8081
+  
+ # Configure this Eureka Discovery Server
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
