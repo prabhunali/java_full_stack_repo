@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: mentor-on-demand-system-auth-ms
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: JakeAGUSTIN
+Implementation-Vendor-Id: com.ibm.mods.auth
+Build-Jdk: 1.8.0_111
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/mentor-on-demand-system-auth-ms
+Created-By: Maven Integration for Eclipse
+
