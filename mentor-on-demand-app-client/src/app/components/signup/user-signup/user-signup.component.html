@@ -1,6 +1,10 @@
-<div>
-  
+<!-- <div *ngIf="isSignedUp" class="alert alert-info alert-dismissible fade show text-center" role="alert">
+  <strong>{{signupMessage}}</strong>
 </div>
+
+<div *ngIf="isSignUpFailed" class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+  <strong>{{signupMessage}}</strong> {{errorMessage}}
+</div> -->
 
 <div class="card w-50 text-center mx-auto">
   <div class="card-body">
@@ -12,29 +16,29 @@
         <div class="form-group">
             <input type="text" class="form-control" name="firstname" placeholder="First Name" [(ngModel)]="form.firstname" #name="ngModel" required />
             <div *ngIf="f.submitted && name.invalid">
-              <div *ngIf="name.errors.required" class="alert alert-warning">Your first name is required</div>
+              <div *ngIf="name.errors.required" class="alert alert-warning"><small>Your first name is required</small></div>
             </div>
         </div>
   
         <div class="form-group">
             <input type="text" class="form-control" name="lastname" placeholder="Last Name" [(ngModel)]="form.lastname" #name="ngModel" required />
             <div *ngIf="f.submitted && name.invalid">
-              <div *ngIf="name.errors.required" class="alert alert-warning">Your last name is required</div>
+              <div *ngIf="name.errors.required" class="alert alert-warning"><small>Your last name is required</small></div>
             </div>
         </div>
   
         <div class="form-group">
           <input type="text" class="form-control" name="contactnumber" placeholder="Contact Number" [(ngModel)]="form.contactnumber" #name="ngModel" required />
             <div *ngIf="f.submitted && name.invalid">
-              <div *ngIf="name.errors.required" class="alert alert-warning">Your contact number is required</div>
+              <div *ngIf="name.errors.required" class="alert alert-warning"><small>Your contact number is required</small></div>
             </div>
         </div>
   
         <div class="form-group">
             <input type="text" class="form-control" name="email" placeholder="Username (Must be a valid email)" [(ngModel)]="form.email" #email="ngModel" required email />
               <div *ngIf="f.submitted && email.invalid">
-                <div *ngIf="email.errors.required" class="alert alert-warning">Your username(email) is required</div>
-                <div *ngIf="email.errors.email" class="alert alert-warning">Your username(email) must be a valid email address</div>
+                <div *ngIf="email.errors.required" class="alert alert-warning"><small>Your username(email) is required</small></div>
+                <div *ngIf="email.errors.email" class="alert alert-warning"><small>Your username(email) must be a valid email address</small></div>
             </div>
         </div>
   
@@ -42,27 +46,33 @@
             <input type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="form.password" #password="ngModel"
               required minlength="6" />
             <div *ngIf="f.submitted && password.invalid">
-              <div *ngIf="password.errors.required" class="alert alert-warning">Password is required</div>
-              <div *ngIf="password.errors.minlength" class="alert alert-warning">Password must be at least 6 characters</div>
+              <div *ngIf="password.errors.required" class="alert alert-warning"><small>Password is required</small></div>
+              <div *ngIf="password.errors.minlength" class="alert alert-warning"><small>Password must be at least 6 characters</small></div>
             </div>
         </div>
   
         <div class="form-group">
-            <input type="password" class="form-control" name="reenterPassword" placeholder="Re-enter Password" [(ngModel)]="form.reenterPassword" #password="ngModel"
-              required minlength="6" />
-            <div *ngIf="f.submitted && password.invalid">
-              <div *ngIf="password.errors.required" class="alert alert-warning">Please re-enter your password</div>
-              <div *ngIf="password.errors.minlength" class="alert alert-warning">Password must be at least 6 characters</div>
-              <div *ngIf="form.password != form.reenterPassword" class="alert alert-warning">Re-entered password is incorrect</div>
+            <input type="password" class="form-control" name="reenterPassword" placeholder="Re-enter Password" [(ngModel)]="form.reenterPassword" #reenterPassword="ngModel"
+              minlength="6" required/>
+            <div *ngIf="f.submitted && reenterPassword.invalid">
+              <div *ngIf="reenterPassword.errors.required" class="alert alert-warning"><small>Please re-enter your password</small></div>
+              <div *ngIf="reenterPassword.errors.minlength" class="alert alert-warning"><small>Password must be at least 6 characters</small></div>
             </div>
+            <div *ngIf="form.password != form.reenterPassword" class="alert alert-warning"><small>Re-entered password is incorrect</small></div>
         </div>
   
         <div class="form-group row">
           <div class="col-sm-12 text-center">
-              <button class="btn btn-sm btn-primary">Signup</button>
-              <div *ngIf="f.submitted && isSignUpFailed" class="alert alert-warning">
-                Signup failed!<br/>{{errorMessage}}
-              </div>
+            <div *ngIf="isSignedUp" class="alert alert-success alert-dismissible fade show text-center" role="alert">
+              <strong><small>{{successMessage}}</small></strong>
+            </div>
+
+            <div *ngIf="f.submitted && isSignUpFailed" class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+              <strong>Signup failed!</strong> <br/>{{errorMessage}}
+            </div>
+
+            <button [disabled]="loading" class="btn btn-sm btn-primary">Signup</button>
+            <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
           </div>
         </div>
       </form>

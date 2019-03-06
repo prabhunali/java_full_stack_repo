@@ -1,0 +1,70 @@
+<div class="container">
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Setting Key</th>
+      <th scope="col">Setting Value</th>
+      <th scope="col">
+        <button type="button" class="btn btn-success btn-sm fa fa-plus" (click)="changeCrudMode('Add')" data-toggle="modal" data-target="#adminSettingModal">Add Settings</button>
+      </th>
+    </tr>
+  </thead>
+  
+  <tbody>
+    <tr *ngFor="let setting of adminSettings; index as i;">
+        <th scope="row"></th>
+        <td>{{setting.name}}</td>
+        <td>{{setting.description}}</td>
+        <td>
+          <button (click)="loadAdminSettingToEdit(setting)" type="button" class="btn btn-warning btn-sm fa fa-edit" aria-hidden="true" data-toggle="modal" data-target="#adminSettingModal"></button>
+          <button (click)="deleteAdminSetting(setting)" type="button" class="btn btn-success btn-sm fa fa-trash icon-margin-left" aria-hidden="true"></button>
+        </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!--Skill Modal-->
+<div class="modal fade" id="adminSettingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add/Edit Setting</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="adminSettingName" class="col-form-label">Key:</label>
+            <input [(ngModel)]="adminSetting.name" type="text" class="form-control" id="adminSettingName" name="adminSettingName" #adminSettingName="ngModel" required>
+          
+            <div *ngIf="adminSettingName.invalid">
+              <div *ngIf="adminSettingName.errors.required" class="alert alert-danger"><small>Please enter a setting key</small></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="adminSettingDescription" class="col-form-label">Value:</label>
+            <input [(ngModel)]="adminSetting.description" type="text" class="form-control" id="adminSettingDescription" name="adminSettingDescription" #adminSettingDescription="ngModel" required>
+          
+            <div *ngIf="adminSettingDescription.invalid">
+              <div *ngIf="adminSettingDescription.errors.required" class="alert alert-danger"><small>Please enter a setting value</small></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <input type="hidden" class="form-control" name="adminSettingId" [(ngModel)]="adminSetting.id">
+          </div>
+
+          <div class="form-group text-right">
+            <hr>
+            <button class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+            <button *ngIf="crudMode ==='Edit'" (click)="editAdminSetting()" class="btn btn-primary btn-sm icon-margin-left">Edit</button>
+            <button *ngIf="crudMode ==='Add'" (click)="addAdminSetting()" class="btn btn-primary btn-sm icon-margin-left">Save</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

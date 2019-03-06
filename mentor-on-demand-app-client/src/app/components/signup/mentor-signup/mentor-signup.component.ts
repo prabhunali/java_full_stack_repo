@@ -30,7 +30,7 @@ export class MentorSignupComponent implements OnInit {
       this.form.firstname,
       this.form.lastname,
       this.form.contactnumber,
-      'Mentor'
+      'MENTOR'
     )
 
     this.authService.signup(this.signupUserInfo).subscribe(
@@ -38,10 +38,12 @@ export class MentorSignupComponent implements OnInit {
         console.log(data);
         this.isSignedUp = true;
         this.isSignUpFailed = false;
+        window.alert("Sign up successful! Please confirm your e-mail to continue logging in.")
         this.router.navigate([PageURL.LOGIN]);
       },
       error => {
         console.log(error);
+        window.alert("Failed to signup!");
         this.errorMessage = error.error.message;
         this.isSignUpFailed = true;
       }

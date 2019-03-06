@@ -1,3 +1,5 @@
+import { Role } from './role';
+
 export class User {
 
     id: number
@@ -8,7 +10,8 @@ export class User {
     contactNumber: string;
     registrationCode: string;
     active: boolean;
-    roleName: string;
+    roles: Role[];
+    //roleName: string;
 
     constructor() { }
 

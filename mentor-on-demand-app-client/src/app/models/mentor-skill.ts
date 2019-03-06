@@ -6,13 +6,15 @@ export class MentorSkill {
     selfRating: number;
     yearOfExperience: number;
     facilitiesOffered: string;
+    hourlyRate: number;
 
     constructor(id: number
             ,   mentorId: number
             ,   skillId: number
             ,   selfRating: number
             ,   yearOfExperience: number
-            ,   facilitiesOffered: string) {
+            ,   facilitiesOffered: string
+            ,   hourlyRate: number) {
 
                 this.id = id;
                 this.mentorId = mentorId;
@@ -20,6 +22,7 @@ export class MentorSkill {
                 this.selfRating = selfRating;
                 this.yearOfExperience = yearOfExperience;
                 this.facilitiesOffered = facilitiesOffered;
+                this.hourlyRate = hourlyRate;
         }
 
     get Id(): number {
@@ -68,6 +71,14 @@ export class MentorSkill {
 
     set FacilitiesOffered(facilitiesOffered: string) {
         this.facilitiesOffered = facilitiesOffered;
+    }
+
+    get HourlyRate(): number {
+        return this.hourlyRate;
+    }
+
+    set HourlyRate(hourlyRate: number) {
+        this.hourlyRate = hourlyRate;
     }
 
 }

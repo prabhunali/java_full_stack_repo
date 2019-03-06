@@ -2,6 +2,7 @@ import { MentorSkill } from './mentor-skill';
 import { Mentor } from './mentor';
 import { Skill } from './skill';
 import { MentorCalendar } from './mentor-calendar';
+import { Training } from './training';
 
 export class MentorSearchResult {
     
@@ -12,8 +13,9 @@ export class MentorSearchResult {
     private _mentorFirstName: string;
     private _mentorLastName: string;
     private _contactNo: string;
+    private _trainings: Map<string, Training[]>;
 
-    constructor(mentor: Mentor, skill: Skill, mentorSkill: MentorSkill, mentorCalendars: MentorCalendar[], mentorFirstName: string, mentorLastName: string, contactNo: string) {
+    constructor(mentor: Mentor, skill: Skill, mentorSkill: MentorSkill, mentorCalendars: MentorCalendar[], mentorFirstName: string, mentorLastName: string, contactNo: string, trainings:  Map<string, Training[]>) {
         this._mentor = mentor;
         this._skill = skill;
         this._mentorSkill = mentorSkill;
@@ -21,6 +23,7 @@ export class MentorSearchResult {
         this._mentorFirstName = mentorFirstName;
         this._mentorLastName = mentorLastName;
         this._contactNo = contactNo;
+        this._trainings = trainings;
     }
 
     get mentor(): Mentor {
@@ -77,6 +80,14 @@ export class MentorSearchResult {
 
     set contactNo(contactNo: string) {
         this._contactNo = contactNo;
+    }
+
+    get trainings():  Map<string, Training[]> {
+        return this._trainings;
+    }
+
+    set trainings(trainings:  Map<string, Training[]>) {
+        this._trainings = trainings;
     }
 
 }

@@ -22,7 +22,7 @@ export class AuthGuardService implements CanActivate{
       //arr1.some(r=> arr2.indexOf(r) >= 0)
       if (route.data.roles && route.data.roles.indexOf(this.tokenService.getAuthorities()[0]) === -1) {
         // role not authorised so redirect to home page
-        this.router.navigate(['/']);
+        this.router.navigate(['/home']);
         return false;
       }
       // authorized so return true

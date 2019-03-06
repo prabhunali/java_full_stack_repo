@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    $('.alert').alert();
+
     $('#viewDetails').click(function() {
         alertMessage("Jquery alert method from an external file is working");
     });

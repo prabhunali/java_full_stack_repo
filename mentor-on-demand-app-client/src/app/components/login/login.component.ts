@@ -5,6 +5,7 @@ import { TokenStorageService } from 'src/app/modules/authentication/auth-service
 import { AuthService } from 'src/app/modules/authentication/auth-services/auth.service';
 import { Subscription } from 'rxjs';
 import { PageURL } from 'src/app/utils/PageURL';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -18,9 +19,9 @@ export class LoginComponent implements OnInit {
   isLoginFailed = false;
   errorMessage = '';
   roles: string[] = [];
-  private loginUser: LoginUser;
-  private subscription: Subscription;
-  private loading = false;
+  loginUser: LoginUser;
+  subscription: Subscription;
+  loading = false;
 
   constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router) {
     // redirect to home if already logged in

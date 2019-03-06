@@ -1,47 +1,47 @@
 export class Skill {
 
-    private _id: number;
-    private _name: string;
-    private _description: string;
-    private _prerequisites: string;
+    id: number;
+    name: string;
+    description: string;
+    prerequisites: string;
 
     constructor(id: number, name: string, description: string, prerequisites: string) {
-        this._id = id;
-        this._name = name;
-        this._description = description;
-        this._prerequisites = prerequisites;
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.prerequisites = prerequisites;
     }
 
-    get id(): number {
-        return this._id;
-    }
+    // get Id(): number {
+    //     return this.id;
+    // }
 
-    set id(id: number) {
-        this._id = id;
-    }
+    // set Id(id: number) {
+    //     this.id = id;
+    // }
 
-    get name(): string {
-        return this._name;
-    }
+    // get name(): string {
+    //     return this._name;
+    // }
 
-    set name(name: string) {
-        this._name = name;
-    }
+    // set name(name: string) {
+    //     this._name = name;
+    // }
 
-    get description(): string {
-        return this._description;
-    }
+    // get description(): string {
+    //     return this._description;
+    // }
 
-    set description(description: string) {
-        this._description = description;
-    }
+    // set description(description: string) {
+    //     this._description = description;
+    // }
 
-    get prerequisites(): string {
-        return this._prerequisites;
-    }
+    // get prerequisites(): string {
+    //     return this._prerequisites;
+    // }
 
-    set prerequisites(prerequisites: string) {
-        this._prerequisites = prerequisites;
-    }
+    // set prerequisites(prerequisites: string) {
+    //     this._prerequisites = prerequisites;
+    // }
 
 }

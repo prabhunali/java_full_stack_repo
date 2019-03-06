@@ -14,20 +14,6 @@ import { TimeUtil } from 'src/app/utils/time-util';
 })
 export class AppComponent implements OnInit {
 
-  // User-entered variables
-  searchKeyword = '';
-  skillName: any = '';
-  dateFromTo: any = '';
-  timeFromHidden: any = '';
-  timeToHidden: any = '';
-  showHideValue = 'Show';
-
-  // Date & Time Picker Variables
-  isMeridian = true;
-  timeTo = new Date();
-  timeFrom = new Date();
-  valid = true;
-
   // Authentication variables
   private loading = false;
   private logStatus = ''; // Login/Logout
@@ -35,7 +21,7 @@ export class AppComponent implements OnInit {
   private roles: string[];
   private isLoggedIn = false;
 
-  constructor(private token: TokenStorageService, private mentorService: MentorService, private router: Router) {
+  constructor(private token: TokenStorageService, private router: Router) {
     if(this.token.isLoggedIn() === true) {
       this.isLoggedIn = true;
     }
@@ -63,22 +49,6 @@ export class AppComponent implements OnInit {
     }
   }
 
-  isValid(event: boolean): void {
-    this.valid = event;
-  }
-
-  onSubmit() {
-    window.alert(TimeUtil.parseTime(this.timeFrom, "en-GB"));
-    //this.loading = true;a
-    $("#collapsSearchMentor").prop("aria-expanded",false);
-    this.skillName = $("#txtSearchKeyWord").val();
-    this.dateFromTo = $("#dateFromTo").val();
-    this.timeFromHidden = $("#timeFromHidden").val();
-    this.timeToHidden = $("#timeToHidden").val();
-    this.router.navigate([PageURL.SEARCH_MENTOR], {queryParams: { skillName: this.skillName, dateFromTo: this.dateFromTo, timeFrom: this.timeFromHidden, timeTo: this.timeToHidden }});
-    //this.loading = false;
-  }
-
   logout() {
     this.token.signOut();
     window.location.reload();
@@ -100,12 +70,36 @@ export class AppComponent implements OnInit {
     this.router.navigate([PageURL.MENTOR_PROFILE]);
   }
 
-  toggleButtonValue() {
-    if(this.showHideValue === 'Show') {
-      this.showHideValue = 'Hide';
-    } else {
-      this.showHideValue = 'Show';
-    }
+  goToMentorTrainingPage() {
+    this.router.navigate([PageURL.MENTOR_TRAINING]);
+  }
+
+  goToUserProfile() {
+    this.router.navigate([PageURL.USER_PROFILE]);
+  }
+
+  goToUserTrainingPage() {
+    this.router.navigate([PageURL.USER_TRAINING]);
+  }
+
+  // goToAdminTrainingPage() {
+  //   this.router.navigate([PageURL.admin]);
+  // }
+
+  goToAdminSkillPage() {
+    this.router.navigate([PageURL.ADMIN_SETTINGS_SKILL]);
+  }
+
+  goToAdminPaymentPage() {
+    this.router.navigate([PageURL.ADMIN_SETTINGS_PAYMENT]);
+  }
+
+  goToAdminUserPage() {
+    this.router.navigate([PageURL.ADMIN_SETTINGS_USER]);
+  }
+
+  goToAdminSettingsPage() {
+    this.router.navigate([PageURL.ADMIN_SETTINGS]);
   }
 
 }

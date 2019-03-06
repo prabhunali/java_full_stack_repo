@@ -5,7 +5,6 @@ import { AuthToken } from '../auth-models/auth-token';
 import { ApiURL } from 'src/app/utils/ApiURL';
 import { SignupUser } from 'src/app/models/signup-user';
 import { LoginUser } from 'src/app/models/login-user';
-import { User } from 'src/app/models/user';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -32,13 +31,14 @@ export class AuthService {
     return this.http.post<String>(url, userSignupInfo, httpOptions);
   }
 
-  checkIfEmailExists(userEmail: string): Observable<boolean> {
-    const url = ApiURL.AUTH_SIGNUP + "/" + userEmail;
-    return this.http.get<boolean>(url, httpOptions);
-  }
+  // checkIfEmailExists(userEmail: string): Observable<boolean> {
+  //   const url = ApiURL.AUTH_SIGNUP + "/" + userEmail;
+  //   return this.http.get<boolean>(url, httpOptions);
+  // }
 
-  sendRegistrationCodeMail(userEmail: string): Observable<string> {
-    const url = ApiURL.AUTH_SEND_REG_CODE_MAIL;
-    return this.http.post<string>(url, userEmail, httpOptions);
-  }
+  // sendRegistrationCodeMail(userEmail: string): Observable<string> {
+  //   const url = ApiURL.AUTH_SEND_REG_CODE_MAIL;
+  //   return this.http.post<string>(url, userEmail, httpOptions);
+  // }
+
 }

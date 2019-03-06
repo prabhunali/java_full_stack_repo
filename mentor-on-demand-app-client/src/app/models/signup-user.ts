@@ -7,7 +7,6 @@ export class SignupUser {
     private lastName: string;
     private contactNumber: string;
     private registrationCode: string;
-    private active: boolean;
     private roleName: string;
 
     constructor(

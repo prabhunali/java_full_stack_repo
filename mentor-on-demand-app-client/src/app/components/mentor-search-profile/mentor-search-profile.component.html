@@ -1,43 +1,138 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-3">Col 1</div>
-    <div class="col-md-6">Col 2</div>
+<div class="container-fluid">
+  <div class="row-fluid mx-auto">
+    <div class="card-group add-margin-top-sm">
+      <div class="col-md-3">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="assets/images/mentor_img.png" alt="Card image cap" height="180" width="40">
+          <div class="card-body">
+            <h5 class="card-title"><b>{{mentorProfile.mentorFirstName + " " + mentorProfile.mentorLastName }}</b></h5>
+            <small><p class="card-text">{{mentorProfile.mentor.introduction}}</p></small>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <small><b>Average Rating</b></small><br>
+              <ng-template #t let-fill="fill">
+                <span class="star" [class.full]="fill === 100">
+                  <span class="half" [style.width.%]="fill">&hearts;</span>&hearts;
+                </span>
+              </ng-template>
+              <ngb-rating [(rate)]="averageRating" [starTemplate]="t" [readonly]="true" max="5"></ngb-rating> 
+            </li>
+            <li class="list-group-item">
+              <small><b>Self Rating</b></small><br>
+              <ng-template #t let-fill="fill">
+                <span class="star" [class.full]="fill === 100">
+                  <span class="half" [style.width.%]="fill">&hearts;</span>&hearts;
+                </span>
+              </ng-template>
+              <ngb-rating [(rate)]="selfRating" [starTemplate]="t" [readonly]="true" max="5"></ngb-rating> 
+            </li>
+
+            <li class="list-group-item"><small><b>Total Years Experience:</b> {{mentorProfile.mentor.yearsOfExperience}} years</small></li>
+            <li class="list-group-item"><small><b>Rate/Hour:</b>   {{mentorProfile.mentorSkill.hourlyRate}}.00</small></li>
+          </ul>
+          <!-- <div class="card-body">
+            <a href="#" class="card-link">Card link</a>
+            <a href="#" class="card-link">Another link</a>
+          </div> -->
+        </div>
+      </div>
 
 
-    <div class="col-md-3">
-        <form>
-          <div class="form-group row">
-            <label class="col-sm-5 col-form-label" for="proposeSkillName">Skill</label>
-            <div class="col-sm-7">
-                <input type="text" class="form-control" id="proposeSkillName" readonly>
-            </div>
+      <div class="col-md-6">
+        <hr>
+        <div class="card card-no-border">
+          <div class="card-body">
+            <b><p class="card-title">Skill/Technology</p></b>
+            <small><p class="card-text">{{mentorProfile.skill.name}}</p></small>
           </div>
-          <div class="form-group row">
-            <label class="col-sm-5 col-form-label" for="proposeDateFromTo">Date Range</label>
-            <div class="col-sm-7">
-              <input type="text" class="form-control" id="proposeDateFromTo" readonly>
-            </div>
+        </div>
+        <hr>
+        <div class="card card-no-border">
+          <div class="card-body">
+            <b><p class="card-title">Training Schedule</p></b>
+            <small><p class="card-text" *ngFor="let cal of mentorProfile.mentorCalendars">{{cal.daysAvailable + " (" + cal.startTime + " - " + cal.endTime + ")"}}</p></small>
           </div>
-          <div class="form-group row">
-            <label class="col-sm-5 col-form-label" for="proposeTimeFrom">Start Time</label>
-            <div class="col-sm-7">
-              <input type="text" class="form-control" id="proposeTimeFrom" readonly>
-            </div>
+        </div>
+        <hr>
+        <div class="card card-no-border">
+          <div class="card-body">
+            <b><p class="card-title">Contact Details</p></b>
+           <small> <p class="card-text">{{mentorProfile.mentor.username}} | {{mentorProfile.contactNo}}</p></small>
           </div>
-          <div class="form-group row">
-            <label class="col-sm-5 col-form-label" for="proposeTimeTo">End Time</label>
-            <div class="col-sm-7">
-              <input type="text" class="form-control" id="proposeTimeTo" readonly>
-            </div>
+        </div>
+        <hr>
+        <div class="card card-no-border">
+          <div class="card-body">
+            <b><p class="card-title">Facilities Offered</p></b>
+            <small><p class="card-text">{{mentorProfile.mentorSkill.facilitiesOffered}}</p></small>
           </div>
-          <div class="form-group row">
-              <label class="col-sm-5 col-form-label" for="proposeMessage">Message</label>
-              <div class="col-sm-7">
-                  <textarea class="form-control" [(ngModel)] = "basicInfo.introduction" name="introduction"></textarea>
+        </div>
+        <hr>
+        <div class="card card-no-border">
+          <div class="card-body">
+            <b><p class="card-title">Training History</p></b>
+            <table class="table table-condensed">
+              <thead>
+                <tr>
+                  <th>Skill/technology</th>
+                  <th>Total Trainings Delivered</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let training of trainingMap | keyvalue">
+                  <td>{{training.key}}</td>
+                  <td>{{training.value.length}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-md-3">
+        <div class="card sticky-top">
+          <h5 class="card-header">Training Proposal</h5>
+          <div class="card-body">
+            <form name="formProposal" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+              <div class="form-group row">
+                <label class="col-sm-3" for="proposeSkillName"><small>Skill</small></label>
+                <div class="col-sm-9">
+                  <textarea class="form-control form-control-sm" id="proposeSkillName" [(ngModel)] = "proposal.skillName" name="skillName" readonly></textarea>
+                  <!-- <input type="text" class="form-control form-control-sm" id="proposeSkillName" readonly [(ngModel)]="proposal.skillName" name="skillName"> -->
+                </div>
               </div>
-            </div>
-          <button type="submit" class="btn btn-primary btn-block">Propose Training</button>
-        </form>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label" for="proposeTimeFrom"><small>Start Time</small></label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm" id="proposeTimeFrom" readonly [(ngModel)]="proposal.timeFrom" name="timeFrom">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label" for="proposeTimeTo"><small>End Time</small></label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm" id="proposeTimeTo" readonly [(ngModel)]="proposal.timeTo" name="timeTo">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-4" for="proposeDateFromTo"><small>Date Range</small></label>
+                <div class="col-sm-8">
+                  <input type="text" ([ngModel])="proposal.dateFromTo" id="proposeDateFromTo" name="proposeDateFromTo" placeholder="mm/dd/yyyy - mm/dd/yyyy" class="form-control" bsDaterangepicker>    
+                </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-sm-4 col-form-label" for="proposeMessage"><small>Message</small></label>
+                  <div class="col-sm-8">
+                      <textarea class="form-control form-control-sm" [(ngModel)] = "proposal.message" name="message"></textarea>
+                  </div>
+                </div>
+              <button type="submit" class="btn btn-primary btn-sm btn-block" [disabled]="submitted">Send to Mentor</button>
+              <!-- <img *ngIf="submitted" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" /> -->
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -1,11 +1,88 @@
 <div class="jumbotron">
-  <h1 class="display-4">Hello, world!</h1>
-  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-  <hr class="my-4">
-  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-  <p class="lead">
-    <a class="btn btn-primary btn-lg fa fa-search" href="#collapsSearchMentor" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapsSearchMentor">Search a mentor now</a>
-  </p>
+  <div class="row">
+    <div class="col-md-6">
+      <h1 class="display-4">Hello, welcome back!</h1>
+      <p class="lead">Mentor-on-Demand Application helps you to find the right mentor for a specific skill or technology. Less hassle, low cost.</p>
+      <hr class="my-4">
+      <p>Search and request a mentor now to stay updated with hot skills and current trends in technology!</p>
+      <!-- <p class="lead">
+        <a class="btn btn-primary btn-lg fa fa-search" href="#collapsSearchMentor" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapsSearchMentor">Search a mentor now</a>
+      </p> -->
+    </div>
+
+    <div class="col-md-6" stlye="{border-style: solid;}">
+      <div class="card text-center">
+        <h5 class="card-header">Seach a Mentor Now!</h5>
+        <div class="card-body">
+            
+            <div class="form-group row align-items-center">
+                <input type="text" id="searchedSkill" name="searchedSkill" class="form-control" placeholder="Search a skill">
+            </div>
+      
+            <div class="row form-align-center">
+              <div class="input-group rm-bg">
+                <div class="input-group-prepend">
+                  <span class="input-group-text rm-bg" id=""><b>Time Slot: </b></span>
+                </div>
+                  
+                <div class="input-group-prepend">
+                  <timepicker [(ngModel)]="searchTimeFrom" [showMeridian]="isMeridian" (isValid)="isValid($event)"></timepicker>
+                  <input type="hidden" id="timeFromHidden" value="{{ searchTimeFrom | date: 'HH:mm' }}" />
+                </div>
+      
+                <div class="input-group-prepend">
+                  <span class="input-group-text rm-bg"><b> - </b></span>
+                </div>
+      
+                <div class="input-group-prepend">
+                  <timepicker [(ngModel)]="searchTimeTo" [showMeridian]="isMeridian" (isValid)="isValid($event)"></timepicker>
+                  <input type="hidden" id="timeToHidden" value="{{ searchTimeTo | date: 'HH:mm' }}" />
+                </div>
+              </div>
+            </div>
+      
+            <div class="form-group row">
+                <div class="input-group-prepend">
+                  <span class="input-group-text rm-bg" id=""><b>Class Days: </b></span>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="search-chk-day-1" value="Mon">
+                  <label class="form-check-label" for="inlineCheckbox1">Mon</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="search-chk-day-2" value="Tue">
+                  <label class="form-check-label" for="inlineCheckbox2">Tue</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="search-chk-day-3" value="Wed">
+                  <label class="form-check-label" for="inlineCheckbox1">Wed</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="search-chk-day-4" value="Thu">
+                  <label class="form-check-label" for="inlineCheckbox2">Thu</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="search-chk-day-5" value="Fri">
+                  <label class="form-check-label" for="inlineCheckbox1">Fri</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="search-chk-day-6" value="Sat">
+                  <label class="form-check-label" for="inlineCheckbox2">Sat</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="search-chk-day-7" value="Sun">
+                  <label class="form-check-label" for="inlineCheckbox2">Sun</label>
+                </div>
+            </div>
+      
+            <div class="form-group">
+              <hr>
+              <button class="btn btn-primary fa fa-search" (click)="onSubmit()">Search</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
 </div>
 
 <div class="container">

@@ -14,13 +14,9 @@ import { User } from 'src/app/models/user';
 import { UserProfile } from 'src/app/models/user-profile';
 import { MentorCalendar } from 'src/app/models/mentor-calendar';
 import { MentorCalendarService } from 'src/app/services/mentor-calendar.service';
-import { TimeUtil } from 'src/app/utils/time-util';
 import { StringUtil } from 'src/app/utils/string-util';
-
-// External Javascript decalarations
-//declare let functionutil: any;
-declare function getTableRowIndex(tableId);
-//declare let TimeUtil;
+import { MentorService } from 'src/app/services/mentor.service';
+import { Mentor } from 'src/app/models/mentor';
 
 @Component({
   selector: 'app-mentor-profile',
@@ -33,6 +29,7 @@ export class MentorProfileComponent implements OnInit {
   private allSkills: Skill[];
   mentorSkills: MentorSkill[];
   private user: User;
+  private mentor: Mentor;
   error = '';
   skillsMapById: Map<number, Skill>;
   private crudMode = '';
@@ -61,7 +58,8 @@ export class MentorProfileComponent implements OnInit {
               private skillService: SkillService,
               private userService: UserService,
               private mentorSkillService: MentorSkillService,
-              private mentorCalService: MentorCalendarService) { }
+              private mentorCalService: MentorCalendarService,
+              private mentorService: MentorService) { }
 
   ngOnInit() {
 
@@ -80,8 +78,8 @@ export class MentorProfileComponent implements OnInit {
     // Get User details
     this.getUser(+this.token.getId());
 
-    // Get User Profile
-    this.getUserProfile(+this.token.getId());
+    // Get Mentor Details
+    this.getMentorDetails(+this.token.getId());
 
     // Get Mentor Calendars
     this.getMentorCalendars(+this.token.getId());
@@ -128,9 +126,9 @@ export class MentorProfileComponent implements OnInit {
     this.userService.getUser(userId).subscribe(
       data => {
         this.user = data;
-        // this.basicInfo.firstName = data.firstName;
-        // this.basicInfo.lastName = data.lastName;
-        // this.basicInfo.contactNumber = data.contactNumber;
+        this.basicInfo.firstName = data.firstName;
+        this.basicInfo.lastName = data.lastName;
+        this.basicInfo.contactNumber = data.contactNumber;
       }, 
       error => {
         console.log(error);
@@ -138,19 +136,138 @@ export class MentorProfileComponent implements OnInit {
     );
   }
 
-  private getUserProfile(mentorId: number) {
-    this.userService.getUserProfile(mentorId).subscribe(
+  // TODO remove later
+  // private getUserProfile(mentorId: number) {
+  //   this.userService.getUserProfile(mentorId).subscribe(
+  //     data => {
+  //       //this.user = data;
+  //       this.basicInfo.firstName = data.firstName;
+  //       this.basicInfo.lastName = data.lastName;
+  //       this.basicInfo.contactNumber = data.contactNumber;
+  //       this.basicInfo.totalYearsExperience = data.totalYearsExp;
+  //       this.basicInfo.contactNumber = data.contactNumber;
+  //       this.basicInfo.linkedInUrl = data.linkedInUrl;
+  //       this.basicInfo.introduction = data.introduction;
+  //     }, 
+  //     error => {
+  //       console.log(error);
+  //     }
+  //   );
+  // }
+
+  // private getUserBasicInfo(mentorId: number) {
+  //   this.userService.getUser(mentorId).subscribe(
+  //     data => {
+  //       this.basicInfo.firstName = data.firstName;
+  //       this.basicInfo.lastName = data.lastName;
+  //       this.basicInfo.contactNumber = data.contactNumber;
+  //     },
+  //     error => {
+  //       window.alert(error);
+  //     }
+  //   );
+  // }
+
+  private getMentorDetails(userId: number) {
+    this.mentorService.getMentor(userId).subscribe(
       data => {
-        //this.user = data;
-        this.basicInfo.firstName = data.firstName;
-        this.basicInfo.lastName = data.lastName;
-        this.basicInfo.contactNumber = data.contactNumber;
-        this.basicInfo.totalYearsExperience = data.totalYearsExp;
-        this.basicInfo.contactNumber = data.contactNumber;
-        this.basicInfo.linkedInUrl = data.linkedInUrl;
+        this.mentor = data;
         this.basicInfo.introduction = data.introduction;
-      }, 
+        this.basicInfo.linkedInUrl = data.linkedinUrl;
+        this.basicInfo.totalYearsExperience = data.yearsOfExperience;
+      },
       error => {
+        window.alert("Cannot get mentor details (Error: " + error + ")") ;
+      }
+    );
+  }
+
+  // TODO remove
+  // private updateUserProfile() {
+  //   let id: number = +this.token.getId();
+  //   let firstName = this.basicInfo.firstName;
+  //   let lastName = this.basicInfo.lastName;
+  //   let totalYearsexp = this.basicInfo.totalYearsExperience
+  //   let contactNo = this.basicInfo.contactNumber;
+  //   let linkedInUrl = this.basicInfo.linkedInUrl
+  //   let introduction = this.basicInfo.introduction
+
+  //   let output = "id="+id+", fname="+firstName+", lname="+lastName+", total exp="+totalYearsexp+" contact="+contactNo+", linkedin="+linkedInUrl+", intro="+ introduction;
+  //   window.alert(output);
+
+  //   let userProfile = new UserProfile(id, firstName, lastName, totalYearsexp, contactNo, linkedInUrl, introduction);
+  //   this.userService.updateUserProfile(userProfile).subscribe(
+  //     data => {
+  //       window.alert(data.message);
+  //       this.reloadPage();
+  //     },
+  //     error => {
+  //       window.alert(error);
+  //       console.log(error);
+  //     }
+  //   );
+  // }
+
+  updateMentorDetails() {
+    if(this.mentor == null || this.mentor.id == null || this.mentor.username == null) {
+      // Save
+      let newMentor: Mentor = new Mentor(
+        null,
+        +this.token.getId(),
+        this.user.username,
+        this.basicInfo.linkedInUrl,
+        this.basicInfo.totalYearsExperience,
+        this.basicInfo.introduction
+      );
+
+      this.mentorService.saveMentor(newMentor).subscribe(
+        data => {
+          window.alert("Saved successfully!");
+        },
+        error => {
+          window.alert("Failed to save!!");
+        }
+      );
+    } else {
+      // Update
+      let newMentor: Mentor = new Mentor(
+        this.mentor.id,
+        +this.token.getId(),
+        this.user.username,
+        this.basicInfo.linkedInUrl,
+        this.basicInfo.totalYearsExperience,
+        this.basicInfo.introduction
+      );
+
+      this.mentorService.updateMentor(newMentor).subscribe(
+        data => {
+          window.alert("Saved successfully!");
+        },
+        error => {
+          window.alert("Failed to save!!");
+        }
+      );
+    }
+  }
+
+
+  private updateUserProfile() {
+    let id: number = +this.token.getId();
+    let firstName = this.basicInfo.firstName;
+    let lastName = this.basicInfo.lastName;
+    let totalYearsexp = this.basicInfo.totalYearsExperience
+    let contactNo = this.basicInfo.contactNumber;
+    let linkedInUrl = this.basicInfo.linkedInUrl
+    let introduction = this.basicInfo.introduction
+
+    let userProfile = new UserProfile(id, firstName, lastName, totalYearsexp, contactNo, linkedInUrl, introduction);
+    this.userService.updateUserProfile(userProfile).subscribe(
+      data => {
+        window.alert(data.message);
+        this.reloadPage();
+      },
+      error => {
+        window.alert(error);
         console.log(error);
       }
     );
@@ -176,19 +293,25 @@ export class MentorProfileComponent implements OnInit {
   }
 
   saveMentorSkill() {
+    if(this.mentor == null || this.mentor.id == null || this.mentor.username == null) {
+      window.alert("Please enter your mentor details first.");
+    }
+
     if(this.crudMode === ActionMode.ADD) {
       this.submitted = true;
-      let mentorId = +this.token.getId();
+      let userId = +this.token.getId();
       let skillId = this.skillService.getSkillMapByKeyName(this.allSkills).get(this.model.skillName).id;
       let selfRating = this.model.skillSelfRating;
       let yearOfExperience = this.model.skillYearsOfExp;
       let facilitiesOffered = this.model.skillFacilities;
+      let hourlyRate = this.model.skillHourlyRate;
       let mentorSkill: MentorSkill= new MentorSkill(0
-                                                  , mentorId
+                                                  , userId
                                                   , skillId
                                                   , selfRating
                                                   , yearOfExperience
-                                                  , facilitiesOffered);
+                                                  , facilitiesOffered
+                                                  , hourlyRate);
 
       this.mentorSkillService.saveMentorSkill(mentorSkill).subscribe(
         data => {
@@ -230,9 +353,9 @@ export class MentorProfileComponent implements OnInit {
 
   saveMentorCalendar() {
     if(this.crudMode === ActionMode.ADD) {
-      let skillName = this.model.calendarSkill;
+      let skillName =  $('#calendarSkill').val();   //this.model.calendarSkill;
       let skillId = this.skillService.getSkillMapByKeyName(this.allSkills).get(skillName).id;
-      let mentorId = +this.token.getId();
+      let userId = +this.token.getId();
       let mentorSkillId = this.mentorSkillService.getMentorSkillBykillId(skillId, this.mentorSkills).id;
       let timeFromHidden = $("#calTimeFromHidden").val();
       let timeToHidden = $("#calTimeToHidden").val();
@@ -246,7 +369,16 @@ export class MentorProfileComponent implements OnInit {
       }
       let daysAvailable = StringUtil.joinStr(daysAvailableAsArray, ",");
       
-      let calendar: MentorCalendar = new MentorCalendar(0, mentorSkillId, mentorId, skillId, timeFromHidden, timeToHidden, daysAvailable);
+      window.alert(
+        "Skill name: " + skillName +
+        " | Skill id: " + skillId +
+        " | mentorId: " + userId +
+        " | mentorSkillId: " + mentorSkillId +
+        " | timeFrom: " + timeFromHidden +
+        " | timeTo: " + timeToHidden
+      );  
+
+      let calendar: MentorCalendar = new MentorCalendar(0, mentorSkillId, userId, skillId, timeFromHidden, timeToHidden, daysAvailable);
 
       this.mentorCalService.saveMentorCalendar(calendar).subscribe(
         data => {
@@ -270,18 +402,13 @@ export class MentorProfileComponent implements OnInit {
     );
   }
 
-  // getTableRowIndex(tableId: string) {
-  //   let x = getTableRowIndex(tableId);
-  //   window.alert(x);
-  //   //return rowIndex;
-  // }
-
   loadMentorSkillToEdit(mentorSkill: MentorSkill) {
     this.crudMode = ActionMode.EDIT;
     this.model.skillName = this.getSkill(mentorSkill.skillId).name;
     this.model.skillSelfRating = mentorSkill.selfRating;
     this.model.skillYearsOfExp = mentorSkill.yearOfExperience;
     this.model.skillFacilities = mentorSkill.facilitiesOffered;
+    this.model.skillHourlyRate = mentorSkill.hourlyRate;
     this.mentorSkillToEdit = mentorSkill;
   }
 
@@ -324,7 +451,8 @@ export class MentorProfileComponent implements OnInit {
                                    , this.skillService.getSkillMapByKeyName(this.allSkills).get(this.model.skillName).id
                                    , this.model.skillSelfRating
                                    , this.model.skillYearsOfExp
-                                   , this.model.skillFacilities);
+                                   , this.model.skillFacilities
+                                   , this.model.skillHourlyRate);
 
     // window.alert("Id=" + ms.id + ", Mentor Id="+ ms.mentorId + ", skillId=" + ms.skillId + ", selfRating=" + ms.selfRating + ", years exp="+ ms.yearOfExperience + "facilities=" + ms.facilitiesOffered); 
     this.mentorSkillService.editMentorSkill(ms).subscribe(
@@ -348,29 +476,6 @@ export class MentorProfileComponent implements OnInit {
         this.error = error;
       }
     );  
-  }
-
-  private updateUserProfile() {
-    let id: number = +this.token.getId();
-    let firstName = this.basicInfo.firstName;
-    let lastName = this.basicInfo.lastName;
-    let totalYearsexp = this.basicInfo.totalYearsExperience
-    let contactNo = this.basicInfo.contactNumber;
-    let linkedInUrl = this.basicInfo.linkedInUrl
-    let introduction = this.basicInfo.introduction
-
-    let output = "id="+id+", fname="+firstName+", lname="+lastName+", total exp="+totalYearsexp+" contact="+contactNo+", linkedin="+linkedInUrl+", intro="+ introduction;
-    window.alert(output);
-
-    let userProfile = new UserProfile(id, firstName, lastName, totalYearsexp, contactNo, linkedInUrl, introduction);
-    this.userService.updateUserProfile(userProfile).subscribe(
-      data => {
-        this.reloadPage();
-      },
-      error => {
-        console.log(error);
-      }
-    );
   }
 
   private changeCrudMode(mode: string) {
@@ -400,13 +505,7 @@ export class MentorProfileComponent implements OnInit {
 
   // format = en-US (12-hour with AM/PM); en-GB (24-hour time without AM/PM)
   parseTime(format: string, date: Date) {
-    //var d = new Date("Mon Jun 22 03:45:24 PDT 2015")
     var timestamp = date.toLocaleTimeString(format); // timestamp → "03:45:24 AM"
-
-    //var meridian = timestamp.slice(-2);
-    // meridian → "AM"
-
-    //window.alert(timestamp + meridian);
   }
 
   parseMeridian(time: string): string {

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MentorSearchResult } from 'src/app/models/mentor-search-result';
 import { PageURL } from 'src/app/utils/PageURL';
 import * as $ from "jquery";
+import { TimeUtil } from 'src/app/utils/time-util';
 
 @Component({
   selector: 'app-mentor-search',
@@ -15,26 +16,40 @@ export class MentorSearchComponent implements OnInit {
   //info: any;
   mentorSearchResults: MentorSearchResult[];
 
+  private startDateTime: Date;
+  private endDateTime: Date;
+  private daysOfSession = '';
+  selfRating = 3.14;
+
   constructor(private mentorService: MentorService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
-  private skillName = '';
-  private dateFromTo = '';
-  private timeFrom = '';
-  private timeTo = '';
-
   ngOnInit() {
+    let skillName = '';
+    let dateTimeFromStr = '';
+    let dateTimeToStr = '';
+
     // Get/Parse Query Parameter Values
     this.activatedRoute.queryParams.subscribe(
       params => {
-        this.skillName = params['skillName'];
-        this.dateFromTo = params['dateFromTo'];
-        this.timeFrom = params['timeFrom'];
-        this.timeTo = params['timeTo'];
+        skillName = params['skillName'];
+        dateTimeFromStr = params['startTime'];
+        dateTimeToStr = params['endTime'];
+        this.daysOfSession = params['daysOfSession'];
       }
     )
 
+    this.startDateTime = new Date(dateTimeFromStr);
+    this.endDateTime = new Date(dateTimeToStr);
+
+    this.startDateTime.setSeconds(0);
+    this.endDateTime.setSeconds(0);
+
     // Call search mentor API method
-    this.mentorService.searchMentors(this.skillName, this.dateFromTo, this.timeFrom, this.timeTo).subscribe(
+    this.mentorService.searchMentors(skillName
+                                   , TimeUtil.parseTime(this.startDateTime, 'en-GB')
+                                   , TimeUtil.parseTime(this.endDateTime, 'en-GB')
+                                   , this.daysOfSession)
+                                   .subscribe(
       data => {
         this.mentorSearchResults = data;
       },
@@ -47,12 +62,23 @@ export class MentorSearchComponent implements OnInit {
   viewMentor(mentorSearchResult: MentorSearchResult) {
     //let clickedButtonId = event.srcElement.id;
     //let mentorSkillId = clickedButtonId.split("-")[2];
-    this.router.navigate([PageURL.SEARCH_MENTOR_PROFILE], {queryParams: { mentorId: mentorSearchResult.mentor.id
-                                                        , mentorSkillId: mentorSearchResult.mentorSkill.id
-                                                        , skillName: this.skillName
-                                                        , dateFromTo: this.dateFromTo
-                                                        , timeFrom: this.timeFrom
-                                                        , timeTo: this.timeTo }});
+    this.router.navigate([PageURL.SEARCH_MENTOR_PROFILE], 
+                            {queryParams: 
+                              {   mentorId: mentorSearchResult.mentor.userId
+                                , mentorSkillId: mentorSearchResult.mentorSkill.id
+                                , skillId: mentorSearchResult.skill.id
+                                , skillName: mentorSearchResult.skill.name
+                                , startTime: this.startDateTime
+                                , endTime: this.endDateTime
+                                , daysOfSession: this.daysOfSession
+                              }
+                            }
+                          );
+  }
+
+  getSelfRating(selfRating: number): number {
+    this.selfRating = selfRating / 2;
+    return selfRating;
   }
 
 }

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { getToken } from '@angular/router/src/utils/preactivation';
 
-// TODO ADD TOKEN PROPERTIES
 const TOKEN_KEY       = 'AuthToken';
 const USERNAME_KEY    = 'AuthUsername';
 const AUTHORITIES_KEY = 'AuthAuthorities';

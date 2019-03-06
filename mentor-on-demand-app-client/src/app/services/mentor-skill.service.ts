@@ -32,7 +32,9 @@ export class MentorSkillService {
   }
 
   deleteMentorSkill(id: number): Observable<ApiResponse<void>> {
+    // Sample URL: http://localhost:8082/mentorskill-api/mentor_skills/delete/20
     const url = ApiURL.MENTOR_SKILL_DELETE + `/${id}`;
+    window.alert("Delete Mentor Skill: " + url);
     return this.http.delete<ApiResponse<void>>(url, httpOptions);
   }
 

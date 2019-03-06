@@ -1,0 +1,32 @@
+<div class="container">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Username</th>
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">Active</th>
+          <th scope="col">Roles</th>
+          <th scope="col">
+              <!-- <button type="button" class="btn btn-success btn-sm fa fa-plus" (click)="changeCrudMode('Add')" data-toggle="modal" data-target="#adminSkillModal">Add Skill</button> -->
+          </th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        <tr *ngFor="let u of users; index as i;">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>{{ u.username }}</td>
+            <td>{{ u.firstName }}</td>
+            <td>{{ u.lastName }}</td>
+            <td>{{ u.active }}</td>
+            <td>xx</td>
+            <td>
+              <button *ngIf="u.active === true" (click)="blockUser(u, true)" type="button" class="btn btn-warning btn-sm fa fa-lock" aria-hidden="true" data-toggle="modal" data-target="#adminSkillModal">Block</button>
+              <button *ngIf="u.active === false" (click)="blockUser(u, false)" type="button" class="btn btn-success btn-sm fa fa-unlock icon-margin-left" aria-hidden="true">Unblock</button>
+            </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

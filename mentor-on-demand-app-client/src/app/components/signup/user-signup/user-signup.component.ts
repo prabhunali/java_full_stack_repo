@@ -16,6 +16,8 @@ export class UserSignupComponent implements OnInit {
   isSignedUp = false;
   isSignUpFailed = false;
   errorMessage = '';
+  successMessage = '';
+  private loading = false;
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -23,29 +25,51 @@ export class UserSignupComponent implements OnInit {
 
   onSubmit() {
     console.log(this.form);
-    
+
+    this.loading = true;
+
     this.signupUserInfo = new SignupUser(
       this.form.email,
       this.form.password,
       this.form.firstname,
       this.form.lastname,
       this.form.contactnumber,
-      'User'
+      'USER'
     )
 
     this.authService.signup(this.signupUserInfo).subscribe(
       data => {
         console.log(data);
-        this.isSignedUp = true;
         this.isSignUpFailed = false;
+        this.loading = false;
+        this.reloadPage();
+        this.isSignedUp = true;
+        this.successMessage = "Signup successful! Please confirm your email.";
+        window.alert("Sign up successful! Please confirm your e-mail to continue logging in.")
         this.router.navigate([PageURL.LOGIN]);
       },
       error => {
         console.log(error);
+        window.alert("Sign up Failed!")
+        this.router.navigate([PageURL.LOGIN]);
         this.errorMessage = error.error.message;
         this.isSignUpFailed = true;
+        this.loading = false;
       }
     )
   }
+
+  reloadPage() {
+    window.location.reload();
+  }
+
+  // resetFields() {
+  //   this.form.firstname = '';
+  //   this.form.lastname = '';
+  //   this.form.contactnumber = '';
+  //   this.form.email = '';
+  //   this.form.password = '';
+  //   this.form.reenterPassword = '';
+  // }
 
 }
