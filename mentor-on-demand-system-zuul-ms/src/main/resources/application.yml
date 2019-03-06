@@ -1,0 +1,62 @@
+server:
+  port: 8082
+    
+spring:
+  application:
+    name: zuul-service
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8081/eureka
+  instance:
+    hostname: localhost
+    #hostname: ${THE_HOST}
+    
+#Ribbon (Feign), disable for now
+ribbon:
+  eureka:
+    enabled: true
+   
+#Zuul Configs
+zuul:
+  ignoredServices: '*'
+  sensitiveHeaders: Cookie,Set-Cookie
+  ribbon:
+    eager-load:
+      enabled: true
+  routes:
+    admin-service:
+      path: /admin-api/**
+      serviceId: admin-service
+      #stripPrefix: false
+      sensitiveHeaders: Cookie,Set-Cookie
+    mentorskill-service:
+      path: /mentorskill-api/**
+      serviceId: mentorskill-service
+      sensitiveHeaders: Cookie,Set-Cookie   
+    user-service:
+      path: /user-api/**
+      serviceId: user-service
+      sensitiveHeaders: Cookie,Set-Cookie
+    app-main-service:
+      path: /mods-api/**
+      serviceId: app-main-service
+      sensitiveHeaders: Cookie,Set-Cookie
+    training-service:
+      path: /training-api/**
+      serviceId: training-service
+      sensitiveHeaders: Cookie,Set-Cookie
+    payment-service:
+      path: /payment-api/**
+      serviceId: payment-service
+      sensitiveHeaders: Cookie,Set-Cookie
+      
+  host:
+    connect-timeout-millis: 60000
+    socket-timeout-millis: 60000
+#  threadPool:
+#    useSeparateThreadPools: true
+#    threadPoolKeyPrefix: app-main-service

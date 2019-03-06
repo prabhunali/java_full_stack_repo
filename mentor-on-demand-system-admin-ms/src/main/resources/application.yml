@@ -1,0 +1,20 @@
+### Spring properties
+### Service registers under this name
+spring:
+  application:
+    name: admin-service
+ 
+# HTTP Server (Tomcat) Port   
+server:
+  port: 8084
+  
+# Discovery Server Access
+eureka:
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8081/eureka/
+#      defaultZone: ${EUREKA_URI:http://localhost:8081/eureka}
+  instance:
+    hostname: localhost
